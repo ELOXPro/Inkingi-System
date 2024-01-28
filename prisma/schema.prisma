@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model Post {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([name])
+}
+
+model School {
+    id        String   @id @default(uuid())
+    name      String
+    province  String
+    district  String
+    sector    String
+    createdAt DateTime @default(now())
+    users     User[]
+    reb       Boolean
+    ordinary  Boolean
+    tvet      Boolean
+    primary   Boolean
+}
+
+model User {
+    id          String  @id @default(uuid())
+    name        String
+    password    String?
+    phonenumber String? @unique
+    roles       Role[]
+    school      School  @relation(fields: [schoolId], references: [id])
+    schoolId    String
+
+    student Student? @relation("UserRole")
+    teacher Teacher? @relation("UserRole")
+    parent  Parent?  @relation("UserRole")
+
+    @@index([id])
+}
+
+model Role {
+    id     String @id @default(uuid())
+    user   User   @relation(fields: [userId], references: [id])
+    userId String
+    role   String
+}
+
+model Student {
+    user        User         @relation("UserRole", fields: [studentId], references: [id])
+    studentId   String       @id @unique
+    classes     Class[]
+    parents     Parent[]
+    attendances Attendance[]
+    Behavior    Behaviour[]
+}
+
+model Teacher {
+    user   User   @relation("UserRole", fields: [userId], references: [id])
+    userId String @id @unique
+}
+
+model Parent {
+    user     User      @relation("UserRole", fields: [userId], references: [phonenumber])
+    userId   String    @id @unique
+    children Student[]
+}
+
+model Class {
+    id       String    @id @default(uuid())
+    students Student[]
+    subjects Subject[]
+}
+
+model Subject {
+    id      String  @id @default(uuid())
+    classes Class[]
+}
+
+model Attendance {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    student   Student  @relation(fields: [studentId], references: [studentId])
+    studentId String
+    present   Boolean
+    excused   Boolean
+    late      Boolean
+}
+
+model Behaviour {
+    id        String  @id @default(uuid())
+    student   Student @relation(fields: [studentId], references: [studentId])
+    studentId String
+    marks     Int
+    score1    Float
+    score2    Float
+    score3    Float
+    class     String
+}
+
+model Groupwork {
+    id String @id @default(uuid())
+}
+
+model Test {
+    id String @id @default(uuid())
+}
