@@ -10,15 +10,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([name])
-}
-
 model School {
     id        String   @id @default(uuid())
     name      String
@@ -34,12 +25,12 @@ model School {
 }
 
 model User {
-    id          String  @id @default(uuid())
+    id          String    @id @default(uuid())
     name        String
     password    String?
-    phonenumber String? @unique
+    phonenumber String?   @unique
     roles       Role[]
-    school      School  @relation(fields: [schoolId], references: [id])
+    school      School    @relation(fields: [schoolId], references: [id])
     schoolId    String
 
     student Student? @relation("UserRole")
@@ -50,10 +41,11 @@ model User {
 }
 
 model Role {
-    id     String @id @default(uuid())
     user   User   @relation(fields: [userId], references: [id])
     userId String
     role   String
+
+    @@id([role, userId])
 }
 
 model Student {

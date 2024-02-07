@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form"
@@ -12,6 +11,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { api } from "@/trpc/react";
+import { toast } from "sonner"
+
 
 const formSchema = z.object({
   schoolname: z.string().min(3, {
@@ -68,7 +69,7 @@ export default function RegisterSchool() {
   const AddSchool = api.school.create.useMutation({
     onSuccess: (data) => {
       if (data.result) {
-        alert(data.result)
+        toast(data.result)
         setLoading(false)
       }
     }
@@ -83,10 +84,7 @@ export default function RegisterSchool() {
 
   return (
       <div className="flex flex-col gap-4 min-h-screen items-center justify-center p-2">
-        <div className="w-1/2 md:w-1/3 flex">
-          <Image src="/logo.svg" alt=" Inkingi System Logo" width={500} height={500} priority />
-        </div>
-        <div className="container p-0 w-auto shadow-lg shadow-primary flex flex-col items-center justify-center gap-0 border border-primary rounded-2xl overflow-hidden">
+        <div className="container p-0 w-auto shadow-lg shadow-primary flex flex-col items-center justify-center gap-0 border border-primary rounded-2xl overflow-hidden mt-16">
           <div className="flex w-full bg-primary justify-center p-2">
             <h1 className="text-xl font-bold text-primary-foreground">Register School</h1>
           </div>

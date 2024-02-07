@@ -1,11 +1,15 @@
-import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import Image from "next/image";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { UserSession } from "@/components/Interfaces";
 
 export default async function Home() {
-  noStore();
-
+  const session = await getServerSession(authOptions) as unknown as UserSession;
+  const sessionData = session  
+  const user = sessionData?.user?.name
+  const roles = sessionData?.user?.roles
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-bl from-white to-secondary text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
@@ -29,6 +33,24 @@ export default async function Home() {
               Login in Inkingi System
             </div>
           </Link>
+        </div>
+        <div className="border border-primary rounded-md text-primary p-2 bg-white shadow-primary shadow-lg">
+          {user ? (
+            <>
+              <h1 className="font-bold text-xl capitalize">Logged in as {user}</h1>
+              {roles ? (
+                roles.map((role) => (
+                  <h1 key={role.role} className="font-medium text-lg capitalize">
+                    role : {role.role}
+                  </h1>
+                ))
+              ) : (
+                <h1 className="font-medium text-lg capitalize">No Roles</h1>
+              )}
+            </>
+          ) : (
+            <h1 className="font-bold text-xl capitalize text-secondary">Please Login</h1>
+          )}
         </div>
         <Footer />
       </div>

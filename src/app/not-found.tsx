@@ -1,7 +1,5 @@
 import GoBack from '@/components/ui/go-back';
 import Image from 'next/image';
-import Link from 'next/link'
-import { redirect } from 'next/navigation';
 
 export const metadata = {
   title: "Not Found || Inkingi System",

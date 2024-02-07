@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { api } from "@/trpc/react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
 	name: z.string().min(4, {
@@ -37,7 +38,7 @@ export default function SignUpForm({ schoolId, role }: SignUpFormProps) {
 	const AddUser = api.user.create.useMutation({
 		onSuccess: (data) => {
 			if (data.result) {
-				alert(data.result)
+				toast(data.result)
 				setLoading(false)
 			}
 		}

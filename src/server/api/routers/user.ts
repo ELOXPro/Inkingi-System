@@ -43,5 +43,4 @@ export const userRouter = createTRPCRouter({
 
       return userData && addRole ? { result: `${input.role} Added` } : { result: `${input.role} Not Added` }
     }),
-
 });

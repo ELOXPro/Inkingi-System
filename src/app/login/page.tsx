@@ -1,6 +1,10 @@
 import Image from "next/image";
 import { Footer } from "@/components/Footer";
 import LoginForm from "@/components/auth/signin";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import Roles from "@/components/auth/roles";
+import Provider from "@/components/provider";
 
 export const metadata = {
   title: "Log in || Inkingi System",
@@ -8,7 +12,8 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.svg" }],
 };
 
-export default function Login() {
+export default async function Login() {
+  const session = await getServerSession(authOptions)
 
   return (
     <div className="min-h-screen h-screen">
@@ -21,7 +26,9 @@ export default function Login() {
           <div className="flex w-full bg-primary justify-center p-2">
             <h1 className="text-xl font-bold text-primary-foreground">Login</h1>
           </div>
-          <LoginForm />
+          <Provider>
+            {session ? <Roles /> : <LoginForm />}
+          </Provider>
         </div>
       </div>
       <Footer />

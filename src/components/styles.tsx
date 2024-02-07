@@ -1,0 +1,2 @@
+export const MenuButtonStyle = "text-sm text-primary font-medium min-w-48 text-center py-2 hover:bg-muted hover:text-secondary transition-all rounded-sm"
+export const MobileMenuButtonStyle = "bg-white text-sm text-primary font-medium w-full text-center p-2 focus:bg-muted focus:text-secondary transition-all border-b border-primary"
